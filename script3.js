@@ -61,63 +61,63 @@ function setClass(element) {
     $(element).addClass('active');
 };
 
-document.getElementById("ddlMusclelist").onchange = function() { fnProcessddl() };
+document.getElementById("ddlMusclelist").onchange = function() {fnProcessddl()};
 
 function fnProcessddl() {
-    $(".nameOrig").text("");
-    $(".descrip").html("");
-    $(".icon1").empty();
-    $(".icon2").empty();
+  $(".nameOrig").text("");
+  $(".descrip").html("");
+  $(".icon1").empty();
+  $(".icon2").empty();
+  
+  var e = document.getElementById("ddlMusclelist");
+  var intExercises = e.options[e.selectedIndex].value;
+  var txtExercises = e.options[e.selectedIndex].text;
+  var arrintExercises = intExercises.split(',');
+  
 
-    var e = document.getElementById("ddlMusclelist");
-    var intExercises = e.options[e.selectedIndex].value;
-    var txtExercises = e.options[e.selectedIndex].text;
-    var arrintExercises = intExercises.split(',');
-
-
-    fnCallExerciseAPI(arrintExercises[0], 1);
-    fnImages(arrintExercises[0], txtExercises, 1);
-    fnCallExerciseAPI(arrintExercises[1], 2);
-    fnImages(arrintExercises[1], txtExercises, 2);
+ fnCallExerciseAPI(arrintExercises[0],1);
+ fnImages(arrintExercises[0],txtExercises,1);
+ fnCallExerciseAPI(arrintExercises[1],2);
+ fnImages(arrintExercises[1],txtExercises,2);
 }
 
-function fnCallExerciseAPI(intExercise, counter) {
+function fnCallExerciseAPI(intExercise,counter){
 
-    try {
-        if (intExercise > 0) {
-            var APIKey = "ef95716d82b313d31a4d83f8ece0eb7e82bf5708";
+  try {
+    if (intExercise > 0 ) {
+      var APIKey = "ef95716d82b313d31a4d83f8ece0eb7e82bf5708";
 
-            var queryURL = "https://wger.de/api/v2/exercise/" + intExercise + "/?=" + APIKey;
-            var nameOrig = ".nameOrig" + counter;
-            var descrip = ".descrip" + counter;
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function(response) {
+      var queryURL = "https://wger.de/api/v2/exercise/" + intExercise + "/?=" + APIKey;
+      var nameOrig = ".nameOrig" + counter;
+      var descrip = ".descrip" + counter;
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
 
-                console.log(queryURL);
+        console.log(queryURL);
+    
+        console.log(response);
 
-                console.log(response);
+        $(nameOrig).text("Exercise Name: " + response.name_original);
+        $(descrip).html("Exercise Description: " + response.description);     
 
-                $(nameOrig).text("Exercise Name: " + response.name_original);
-                $(descrip).html("Exercise Description: " + response.description);
+        console.log("Exercise Name: " + response.name_original);
+        console.log("Exercise Description: " + response.description);
 
-                console.log("Exercise Name: " + response.name_original);
-                console.log("Exercise Description: " + response.description);
-
-            })
-
-        }
-    } catch (error) {
+      })
 
     }
+  } catch (error) {
+    
+  }
 };
 
-function fnImages(intExercise, txtExercises, counter) {
+function fnImages(intExercise,txtExercises,counter){
 
-    var img1 = '<img src="images/' + txtExercises + intExercise + '-1.png" />'
-    var img2 = '<img src="images/' + txtExercises + intExercise + '-2.png" />'
-    var icon = ".icon" + counter;
-    $(icon).prepend(img1);
-    $(icon).prepend(img2);
+  var img1 = '<img src="images/' + txtExercises + intExercise + '-1.png" />'
+  var img2 = '<img src="images/' + txtExercises + intExercise + '-2.png" />'
+  var icon = ".icon" + counter;
+  $(icon).prepend(img1);
+  $(icon).prepend(img2); 
 };
